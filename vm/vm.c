@@ -18,7 +18,7 @@ void Debug_Vm(struct Vm* vm) {
     }
     printf("\n");
     printf("var:\n");
-    for (i = 100; i < 110; i++) {
+    for (i = 50; i < 150; i++) {
         printf("mem[%d]: %d\n", i, vm->mem[i]);
     }
     printf("\n");
@@ -32,6 +32,7 @@ void Debug_Vm(struct Vm* vm) {
 void Init_Vm(struct Vm* vm) {
     vm->pc = 0;
     vm->sp = -1;
+    vm->fp = -1;
     vm->state = 1;
 }
 
@@ -190,7 +191,68 @@ void Run_Vm(struct Vm* vm) {
             printf("LOAD %d\n", operand);
             break;
         }
-    
+        
+        case CALL: {
+            operand = vm->mem[vm->pc + 1]; // 获取函数地址
+            if (vm->sp < 255) {
+                vm->Push(vm->fp, vm);      // 保存当前栈帧指针
+                vm->Push(vm->pc + 2, vm);  // 将当前pc+2入栈以便返回
+                vm->fp = vm->sp;
+                vm->pc = operand;           // 跳转到函数地址
+                printf("CALL %d\n", operand);
+            }
+            else {
+                printf("Stack Overflow!\n");
+                vm->state = 0;
+                vm->Debug(vm);
+            }
+            break;
+        }
+        
+
+        case RET: {
+            if (vm->sp >= 0) {
+                vm->sp = vm->fp;              // 清理当前栈帧的局部变量
+                vm->pc = vm->Pop(vm);       // 从堆栈中取出返回地址
+                vm->fp = vm->Pop(vm);         // 恢复上一个栈帧指针
+                printf("RET\n");
+            }
+            else {
+                printf("Stack underflow\n");
+                vm->state = 0;
+                vm->Debug(vm);
+            }
+            break;
+        }
+        
+        case PUSH_SP: {
+            Push_Vm(vm->sp, vm);
+            vm->pc += 1;
+            printf("PUSH_SP\n");
+            break;
+        }
+
+        case PUSH_FP: {
+            Push_Vm(vm->fp, vm);
+            vm->pc += 1;
+            printf("PUSH_FP\n");
+            break;
+        }
+
+        case POP_SP: {
+            vm->sp = Pop_Vm(vm);
+            vm->pc += 1;
+            printf("POP_SP\n");
+            break;
+        }
+
+        case POP_FP: {
+            vm->fp = Pop_Vm(vm);
+            vm->pc += 1;
+            printf("POP_FP\n");
+            break;
+        }
+
         default: {
             printf("Unknown opcode: %d\n", opcode);
             vm->Debug(vm);
@@ -260,6 +322,26 @@ void Load_Vm(struct Vm* vm, const char* filename) {
             vm->mem[index++] = LOAD;
             fscanf(file, "%d", &operand); // 读取操作数
             vm->mem[index++] = operand;
+        }
+        else if (strcmp(instruction, "CALL") == 0) {
+            vm->mem[index++] = CALL;
+            fscanf(file, "%d", &operand); // 读取操作数
+            vm->mem[index++] = operand;
+        }
+        else if (strcmp(instruction, "RET") == 0) {
+            vm->mem[index++] = RET;
+        }
+        else if (strcmp(instruction, "PUSH_SP") == 0) {
+            vm->mem[index++] = PUSH_SP;
+        }
+        else if (strcmp(instruction, "PUSH_FP") == 0) {
+            vm->mem[index++] = PUSH_FP;
+        }
+        else if (strcmp(instruction, "POP_SP") == 0) {
+            vm->mem[index++] = POP_SP;
+        }
+        else if (strcmp(instruction, "POP_FP") == 0) {
+            vm->mem[index++] = POP_FP;
         }
         else if (strcmp(instruction, "HALT") == 0) {
             vm->mem[index++] = HALT;
