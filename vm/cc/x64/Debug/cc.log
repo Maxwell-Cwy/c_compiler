@@ -1,0 +1,10 @@
+﻿  vm.c
+C:\Users\27594\Desktop\资料\cc\vm\vm.c(83,17): warning C4098: “Run_Vm”:“void”函数返回值
+C:\Users\27594\Desktop\资料\cc\vm\vm.c(52,9): warning C4101: “i”: 未引用的局部变量
+C:\Users\27594\Desktop\资料\cc\vm\vm.c(216,12): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\27594\Desktop\资料\cc\vm\vm.c(220,13): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\27594\Desktop\资料\cc\vm\vm.c(243,13): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\27594\Desktop\资料\cc\vm\vm.c(248,13): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\27594\Desktop\资料\cc\vm\vm.c(256,13): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\27594\Desktop\资料\cc\vm\vm.c(261,13): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  cc.vcxproj -> C:\Users\27594\Desktop\资料\cc\vm\x64\Debug\cc.exe
